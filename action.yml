@@ -1,0 +1,24 @@
+name: "Deploy scripts"
+description: "Application that deploys data models to tanants"
+author: "talent::digital"
+
+inputs:
+  environment_name:
+    description: "Tenant name"
+    required: true
+  episodes_provisioner_client_password:
+    description: "Ask talentdigital support. This needs to be setup in github secrets, [see](https://github.com/Azure/actions-workflow-samples/blob/master/assets/create-secrets-for-GitHub-workflows.md)"
+    required: true
+  episodes_provisioner_client:
+    description: "Ask talentdigital support"
+    required: true
+  season_file_path:
+    description: "Custom path for `season.yaml`, default to root directory"
+    required: false
+  target_domain:
+    description: "e.g. talent.digital.eu"
+    required: true
+
+runs:
+  using: "node16"
+  main: "./dist/index.js"
