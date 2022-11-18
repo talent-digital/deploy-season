@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "outDir": "build",
+    "skipLibCheck": true,
+    "target": "ESNext"
+  },
+  "include": ["./src/index.ts"],
+  "exclude": ["node_modules"]
+}
