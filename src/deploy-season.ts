@@ -4,6 +4,7 @@ import { getAuthorizationHeader } from "./auth";
 import { parse } from "yaml";
 import util from "util";
 import got from "got";
+import { existsSync } from "fs";
 
 type DeploySeasonInput = {
   baseUrl: string;
@@ -28,7 +29,20 @@ export const deploySeasons = async ({
     clientId,
     clientSecret
   );
-  const path = join(rootPath, "season.yaml");
+  let path = "";
+  const path1 = join(rootPath, "season.yml");
+  const path2 = join(rootPath, "season.yaml");
+
+  if (existsSync(path1)) {
+    path = path1;
+  } else if (existsSync(path2)) {
+    path = path2;
+  } else {
+    throw new Error(
+      `season.yaml or season.yml don't exist at specified path: ${rootPath}`
+    );
+  }
+
   const season = parse(await readFile(path, "utf-8"));
 
   console.log(

@@ -25,8 +25,6 @@ if (!!INPUT_ENVIRONMENT_NAME && !!INPUT_TARGET_DOMAIN) {
 
 const rootPath = INPUT_SEASON_FILE_PATH ?? "./";
 
-console.log("rootPath", rootPath);
-
 const clientId =
   INPUT_EPISODES_PROVISIONER_CLIENT || "episodes-provisioner-client";
 
