@@ -3919,7 +3919,7 @@ module.exports = (options = {}, connect = tls.connect) => new Promise((resolve, 
 
 /***/ }),
 
-/***/ 8478:
+/***/ 236:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 
@@ -9734,7 +9734,10 @@ const getAuthorizationHeader = async (domain, environmemt, clientId, clientSecre
 
 // EXTERNAL MODULE: ./node_modules/.pnpm/yaml@2.1.3/node_modules/yaml/dist/index.js
 var yaml_dist = __nccwpck_require__(4106);
+;// CONCATENATED MODULE: external "fs"
+const external_fs_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("fs");
 ;// CONCATENATED MODULE: ./src/deploy-season.ts
+
 
 
 
@@ -9743,7 +9746,18 @@ var yaml_dist = __nccwpck_require__(4106);
 
 const deploySeasons = async ({ baseUrl, clientId, clientSecret, domain, environmemt, rootPath, }) => {
     const authorization = await getAuthorizationHeader(domain, environmemt, clientId, clientSecret);
-    const path = (0,external_path_namespaceObject.join)(rootPath, "season.yaml");
+    let path = "";
+    const path1 = (0,external_path_namespaceObject.join)(rootPath, "season.yml");
+    const path2 = (0,external_path_namespaceObject.join)(rootPath, "season.yaml");
+    if ((0,external_fs_namespaceObject.existsSync)(path1)) {
+        path = path1;
+    }
+    else if ((0,external_fs_namespaceObject.existsSync)(path2)) {
+        path = path2;
+    }
+    else {
+        throw new Error(`season.yaml or season.yml don't exist at specified path: ${rootPath}`);
+    }
     const season = (0,yaml_dist/* parse */.Qc)(await (0,promises_namespaceObject.readFile)(path, "utf-8"));
     console.log("Object to deploy:\n", external_util_default().inspect(season, { showHidden: false, depth: null, colors: true }));
     try {
@@ -9767,7 +9781,7 @@ const deploySeasons = async ({ baseUrl, clientId, clientSecret, domain, environm
 /***/ ((module, __unused_webpack___webpack_exports__, __nccwpck_require__) => {
 
 __nccwpck_require__.a(module, async (__webpack_handle_async_dependencies__) => {
-/* harmony import */ var _deploy_season__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(8478);
+/* harmony import */ var _deploy_season__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(236);
 
 const { INPUT_ENVIRONMENT_NAME, INPUT_EPISODES_PROVISIONER_CLIENT_PASSWORD, INPUT_EPISODES_PROVISIONER_CLIENT, INPUT_SEASON_FILE_PATH, INPUT_TARGET_DOMAIN, PW, } = process.env;
 let baseUrl;
@@ -9784,7 +9798,6 @@ else {
     domain = "talentdigit.al";
 }
 const rootPath = INPUT_SEASON_FILE_PATH ?? "./";
-console.log("rootPath", rootPath);
 const clientId = INPUT_EPISODES_PROVISIONER_CLIENT || "episodes-provisioner-client";
 let clientSecret;
 if (INPUT_EPISODES_PROVISIONER_CLIENT_PASSWORD) {
