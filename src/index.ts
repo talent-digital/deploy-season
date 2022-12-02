@@ -1,6 +1,7 @@
-import { deploySeasons } from "./deploy-season";
+import { deploySeason } from "./deploy-season";
 
 const {
+  GITHUB_REPOSITORY,
   INPUT_ENVIRONMENT_NAME,
   INPUT_EPISODES_PROVISIONER_CLIENT_PASSWORD,
   INPUT_EPISODES_PROVISIONER_CLIENT,
@@ -12,6 +13,11 @@ const {
 let baseUrl: string;
 let environmemt: string;
 let domain: string;
+
+if (!GITHUB_REPOSITORY)
+  throw "The GITHUB_REPOSITORY environment variable is empty!";
+
+const id = GITHUB_REPOSITORY;
 
 if (!!INPUT_ENVIRONMENT_NAME && !!INPUT_TARGET_DOMAIN) {
   baseUrl = `https://${INPUT_ENVIRONMENT_NAME}.${INPUT_TARGET_DOMAIN}`;
@@ -47,7 +53,8 @@ console.log(`Environment: ${environmemt}`);
 console.log(`Domain: ${domain}`);
 console.log(`RootPath: ${rootPath}`);
 
-await deploySeasons({
+await deploySeason({
+  id,
   baseUrl,
   clientId,
   clientSecret,
