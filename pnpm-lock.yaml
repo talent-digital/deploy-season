@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@talentdigital/season': ^0.1.1
   '@types/node': ^18.7.18
   '@vercel/ncc': ^0.34.0
   dotenv: ^16.0.1
@@ -9,6 +10,7 @@ specifiers:
   yaml: ^2.1.1
 
 devDependencies:
+  '@talentdigital/season': 0.1.1
   '@types/node': 18.11.9
   '@vercel/ncc': 0.34.0
   dotenv: 16.0.3
@@ -28,6 +30,10 @@ packages:
     engines: {node: '>=14.16'}
     dependencies:
       defer-to-connect: 2.0.1
+    dev: true
+
+  /@talentdigital/season/0.1.1:
+    resolution: {integrity: sha512-N7JVGzC8F/XHwCxaQu5UQ5SFygPv+FKbGCErvijQnqPBIR/wefK9Mo2wBA248Jcptb9eo7/CptCxaxOx/f1bZg==}
     dev: true
 
   /@types/http-cache-semantics/4.0.1:

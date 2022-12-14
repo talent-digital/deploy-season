@@ -5,8 +5,10 @@ import { parse } from "yaml";
 import util from "util";
 import got from "got";
 import { existsSync } from "fs";
+import { SeasonDefinition } from "@talentdigital/season";
 
 type DeploySeasonInput = {
+  id: string;
   baseUrl: string;
   clientId: string;
   clientSecret: string;
@@ -15,7 +17,8 @@ type DeploySeasonInput = {
   rootPath: string;
 };
 
-export const deploySeasons = async ({
+export const deploySeason = async ({
+  id,
   baseUrl,
   clientId,
   clientSecret,
@@ -43,11 +46,13 @@ export const deploySeasons = async ({
     );
   }
 
-  const season = parse(await readFile(path, "utf-8"));
+  const season: SeasonDefinition = parse(await readFile(path, "utf-8"));
+
+  const json = { id, ...season };
 
   console.log(
     "Object to deploy:\n",
-    util.inspect(season, { showHidden: false, depth: null, colors: true })
+    util.inspect(json, { showHidden: false, depth: null, colors: true })
   );
 
   try {
@@ -55,7 +60,7 @@ export const deploySeasons = async ({
       headers: {
         authorization,
       },
-      json: season,
+      json,
     });
 
     console.log("\nSeason deploy completed\n");
