@@ -2,6 +2,7 @@ import { deploySeason } from "./deploy-season";
 
 const {
   GITHUB_REPOSITORY,
+  GITHUB_WORKSPACE,
   INPUT_ENVIRONMENT_NAME,
   INPUT_EPISODES_PROVISIONER_CLIENT_PASSWORD,
   INPUT_EPISODES_PROVISIONER_CLIENT,
@@ -29,7 +30,8 @@ if (!!INPUT_ENVIRONMENT_NAME && !!INPUT_TARGET_DOMAIN) {
   domain = "talentdigit.al";
 }
 
-const rootPath = INPUT_SEASON_FILE_PATH ?? "./";
+let rootPath = GITHUB_WORKSPACE;
+if (INPUT_SEASON_FILE_PATH) rootPath = `${rootPath}/${INPUT_SEASON_FILE_PATH}`;
 
 const clientId =
   INPUT_EPISODES_PROVISIONER_CLIENT || "episodes-provisioner-client";
