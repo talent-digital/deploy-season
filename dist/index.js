@@ -9790,7 +9790,7 @@ let environmemt;
 let domain;
 if (!GITHUB_REPOSITORY)
     throw "The GITHUB_REPOSITORY environment variable is empty!";
-const id = GITHUB_REPOSITORY;
+const id = GITHUB_REPOSITORY.replace("/", "-");
 if (!!INPUT_ENVIRONMENT_NAME && !!INPUT_TARGET_DOMAIN) {
     baseUrl = `https://${INPUT_ENVIRONMENT_NAME}.${INPUT_TARGET_DOMAIN}`;
     environmemt = INPUT_ENVIRONMENT_NAME;
