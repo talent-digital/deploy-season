@@ -3925,7 +3925,7 @@ module.exports = (options = {}, connect = tls.connect) => new Promise((resolve, 
 
 // EXPORTS
 __nccwpck_require__.d(__webpack_exports__, {
-  "D": () => (/* binding */ deploySeasons)
+  "t": () => (/* binding */ deploySeason)
 });
 
 ;// CONCATENATED MODULE: external "fs/promises"
@@ -9744,7 +9744,7 @@ const external_fs_namespaceObject = __WEBPACK_EXTERNAL_createRequire(import.meta
 
 
 
-const deploySeasons = async ({ baseUrl, clientId, clientSecret, domain, environmemt, rootPath, }) => {
+const deploySeason = async ({ id, baseUrl, clientId, clientSecret, domain, environmemt, rootPath, }) => {
     const authorization = await getAuthorizationHeader(domain, environmemt, clientId, clientSecret);
     let path = "";
     const path1 = (0,external_path_namespaceObject.join)(rootPath, "season.yml");
@@ -9759,13 +9759,14 @@ const deploySeasons = async ({ baseUrl, clientId, clientSecret, domain, environm
         throw new Error(`season.yaml or season.yml don't exist at specified path: ${rootPath}`);
     }
     const season = (0,yaml_dist/* parse */.Qc)(await (0,promises_namespaceObject.readFile)(path, "utf-8"));
-    console.log("Object to deploy:\n", external_util_default().inspect(season, { showHidden: false, depth: null, colors: true }));
+    const json = { id, ...season };
+    console.log("Object to deploy:\n", external_util_default().inspect(json, { showHidden: false, depth: null, colors: true }));
     try {
         await got_dist_source.post(`${baseUrl}/api/v1/season`, {
             headers: {
                 authorization,
             },
-            json: season,
+            json,
         });
         console.log("\nSeason deploy completed\n");
     }
@@ -9783,10 +9784,13 @@ const deploySeasons = async ({ baseUrl, clientId, clientSecret, domain, environm
 __nccwpck_require__.a(module, async (__webpack_handle_async_dependencies__) => {
 /* harmony import */ var _deploy_season__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(236);
 
-const { INPUT_ENVIRONMENT_NAME, INPUT_EPISODES_PROVISIONER_CLIENT_PASSWORD, INPUT_EPISODES_PROVISIONER_CLIENT, INPUT_SEASON_FILE_PATH, INPUT_TARGET_DOMAIN, PW, } = process.env;
+const { GITHUB_REPOSITORY, GITHUB_WORKSPACE, INPUT_ENVIRONMENT_NAME, INPUT_EPISODES_PROVISIONER_CLIENT_PASSWORD, INPUT_EPISODES_PROVISIONER_CLIENT, INPUT_SEASON_FILE_PATH, INPUT_TARGET_DOMAIN, PW, } = process.env;
 let baseUrl;
 let environmemt;
 let domain;
+if (!GITHUB_REPOSITORY)
+    throw "The GITHUB_REPOSITORY environment variable is empty!";
+const id = GITHUB_REPOSITORY;
 if (!!INPUT_ENVIRONMENT_NAME && !!INPUT_TARGET_DOMAIN) {
     baseUrl = `https://${INPUT_ENVIRONMENT_NAME}.${INPUT_TARGET_DOMAIN}`;
     environmemt = INPUT_ENVIRONMENT_NAME;
@@ -9797,7 +9801,9 @@ else {
     environmemt = "devtd2";
     domain = "talentdigit.al";
 }
-const rootPath = INPUT_SEASON_FILE_PATH ?? "./";
+let rootPath = GITHUB_WORKSPACE;
+if (INPUT_SEASON_FILE_PATH)
+    rootPath = `${rootPath}/${INPUT_SEASON_FILE_PATH}`;
 const clientId = INPUT_EPISODES_PROVISIONER_CLIENT || "episodes-provisioner-client";
 let clientSecret;
 if (INPUT_EPISODES_PROVISIONER_CLIENT_PASSWORD) {
@@ -9815,7 +9821,8 @@ console.log(`Base URL: ${baseUrl}`);
 console.log(`Environment: ${environmemt}`);
 console.log(`Domain: ${domain}`);
 console.log(`RootPath: ${rootPath}`);
-await (0,_deploy_season__WEBPACK_IMPORTED_MODULE_0__/* .deploySeasons */ .D)({
+await (0,_deploy_season__WEBPACK_IMPORTED_MODULE_0__/* .deploySeason */ .t)({
+    id,
     baseUrl,
     clientId,
     clientSecret,
