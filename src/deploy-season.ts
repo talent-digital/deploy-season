@@ -6,6 +6,7 @@ import util from "util";
 import got from "got";
 import { existsSync } from "fs";
 import { SeasonDefinition } from "@talentdigital/season";
+import { exit } from "node:process";
 
 type DeploySeasonInput = {
   id: string;
@@ -66,5 +67,6 @@ export const deploySeason = async ({
     console.log("\nSeason deploy completed\n");
   } catch (err) {
     console.error("\nError during season deploy\n", err);
+    exit(1);
   }
 };
