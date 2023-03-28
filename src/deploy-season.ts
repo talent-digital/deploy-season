@@ -6,7 +6,7 @@ import util from "util";
 import got from "got";
 import { existsSync } from "fs";
 import { SeasonDefinition } from "@talentdigital/season";
-import { exit } from "node:process";
+import core from "@actions/core";
 
 type DeploySeasonInput = {
   id: string;
@@ -14,7 +14,7 @@ type DeploySeasonInput = {
   clientId: string;
   clientSecret: string;
   domain: string;
-  environmemt: string;
+  environment: string;
   rootPath: string;
 };
 
@@ -24,12 +24,12 @@ export const deploySeason = async ({
   clientId,
   clientSecret,
   domain,
-  environmemt,
+  environment,
   rootPath,
 }: DeploySeasonInput) => {
   const authorization = await getAuthorizationHeader(
     domain,
-    environmemt,
+    environment,
     clientId,
     clientSecret
   );
@@ -51,9 +51,12 @@ export const deploySeason = async ({
 
   const json = { id, ...season };
 
-  console.log(
-    "Object to deploy:\n",
-    util.inspect(json, { showHidden: false, depth: null, colors: true })
+  core.debug(
+    `Object to deploy:\n ${util.inspect(json, {
+      showHidden: false,
+      depth: null,
+      colors: true,
+    })}`
   );
 
   try {
@@ -63,10 +66,14 @@ export const deploySeason = async ({
       },
       json,
     });
-
-    console.log("\nSeason deploy completed\n");
+    core.debug("\nSeason deploy completed\n");
   } catch (err) {
-    console.error("\nError during season deploy\n", err);
-    exit(1);
+    core.setFailed(
+      `\nError during season deploy\n ${util.inspect(err, {
+        showHidden: false,
+        depth: null,
+        colors: true,
+      })}`
+    );
   }
 };

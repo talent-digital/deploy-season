@@ -12,7 +12,7 @@ const {
 } = process.env;
 
 let baseUrl: string;
-let environmemt: string;
+let environment: string;
 let domain: string;
 
 if (!GITHUB_REPOSITORY)
@@ -22,11 +22,11 @@ const id = GITHUB_REPOSITORY.replace("/", "-");
 
 if (!!INPUT_ENVIRONMENT_NAME && !!INPUT_TARGET_DOMAIN) {
   baseUrl = `https://${INPUT_ENVIRONMENT_NAME}.${INPUT_TARGET_DOMAIN}`;
-  environmemt = INPUT_ENVIRONMENT_NAME;
+  environment = INPUT_ENVIRONMENT_NAME;
   domain = INPUT_TARGET_DOMAIN;
 } else {
   baseUrl = "http://localhost:8081";
-  environmemt = "devtd2";
+  environment = "devtd2";
   domain = "talentdigit.al";
 }
 
@@ -51,7 +51,7 @@ if (INPUT_EPISODES_PROVISIONER_CLIENT_PASSWORD) {
 }
 
 console.log(`Base URL: ${baseUrl}`);
-console.log(`Environment: ${environmemt}`);
+console.log(`Environment: ${environment}`);
 console.log(`Domain: ${domain}`);
 console.log(`RootPath: ${rootPath}`);
 
@@ -61,6 +61,6 @@ await deploySeason({
   clientId,
   clientSecret,
   domain,
-  environmemt,
+  environment,
   rootPath,
 });
