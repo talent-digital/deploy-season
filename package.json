@@ -1,7 +1,7 @@
 {
   "name": "deploy-scripts",
   "version": "1.0.0",
-  "description": "Application that deploys data models to tanants",
+  "description": "Application that deploys data models to tenants",
   "exports": {
     ".": {
       "import": {
@@ -20,6 +20,7 @@
   "author": "talent::digital",
   "license": "See license.md",
   "devDependencies": {
+    "@actions/core": "^1.10.0",
     "@talentdigital/season": "^0.1.1",
     "@types/node": "^18.7.18",
     "@vercel/ncc": "^0.34.0",

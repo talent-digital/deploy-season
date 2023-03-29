@@ -1,5 +1,5 @@
 name: "Deploy scripts"
-description: "Application that deploys data models to tanants"
+description: "Application that deploys data models to tenants"
 author: "talent::digital"
 
 inputs:
