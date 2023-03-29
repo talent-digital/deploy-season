@@ -1,5 +1,5 @@
 import { deploySeason } from "./deploy-season";
-import core from "@actions/core";
+import * as core from "@actions/core";
 
 const {
   GITHUB_REPOSITORY,
