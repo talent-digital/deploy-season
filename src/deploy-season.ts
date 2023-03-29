@@ -51,7 +51,7 @@ export const deploySeason = async ({
 
   const json = { id, ...season };
 
-  core.debug(
+  core.info(
     `Object to deploy:\n ${util.inspect(json, {
       showHidden: false,
       depth: null,
@@ -66,7 +66,7 @@ export const deploySeason = async ({
       },
       json,
     });
-    core.debug("\nSeason deploy completed\n");
+    core.info("\nSeason deploy completed\n");
   } catch (err) {
     core.setFailed(
       `\nError during season deploy\n ${util.inspect(err, {

@@ -1,4 +1,5 @@
 import { deploySeason } from "./deploy-season";
+import core from "@actions/core";
 
 const {
   GITHUB_REPOSITORY,
@@ -50,10 +51,10 @@ if (INPUT_EPISODES_PROVISIONER_CLIENT_PASSWORD) {
   }
 }
 
-console.log(`Base URL: ${baseUrl}`);
-console.log(`Environment: ${environment}`);
-console.log(`Domain: ${domain}`);
-console.log(`RootPath: ${rootPath}`);
+core.info(`Base URL: ${baseUrl}`);
+core.info(`Environment: ${environment}`);
+core.info(`Domain: ${domain}`);
+core.info(`RootPath: ${rootPath}`);
 
 await deploySeason({
   id,
