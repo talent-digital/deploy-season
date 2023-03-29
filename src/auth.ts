@@ -1,5 +1,5 @@
 import got from "got";
-import core from "@actions/core";
+import * as core from "@actions/core";
 import util from "util";
 
 export const getAuthorizationHeader = async (

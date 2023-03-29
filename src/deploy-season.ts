@@ -6,7 +6,7 @@ import util from "util";
 import got from "got";
 import { existsSync } from "fs";
 import { SeasonDefinition } from "@talentdigital/season";
-import core from "@actions/core";
+import * as core from "@actions/core";
 
 type DeploySeasonInput = {
   id: string;

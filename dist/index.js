@@ -12396,7 +12396,6 @@ const got = source_create(defaults);
 
 // EXTERNAL MODULE: ./node_modules/.pnpm/@actions+core@1.10.0/node_modules/@actions/core/lib/core.js
 var core = __nccwpck_require__(7954);
-var core_default = /*#__PURE__*/__nccwpck_require__.n(core);
 ;// CONCATENATED MODULE: ./src/auth.ts
 
 
@@ -12414,7 +12413,7 @@ const getAuthorizationHeader = async (domain, environment, clientId, clientSecre
         return `${token_type} ${access_token}`;
     }
     catch (err) {
-        core_default().setFailed(`\nFailed to authorize\n ${external_util_default().inspect(err, {
+        core.setFailed(`\nFailed to authorize\n ${external_util_default().inspect(err, {
             showHidden: false,
             depth: null,
             colors: true,
@@ -12451,7 +12450,7 @@ const deploySeason = async ({ id, baseUrl, clientId, clientSecret, domain, envir
     }
     const season = (0,yaml_dist/* parse */.Qc)(await (0,promises_namespaceObject.readFile)(path, "utf-8"));
     const json = { id, ...season };
-    core_default().info(`Object to deploy:\n ${external_util_default().inspect(json, {
+    core.info(`Object to deploy:\n ${external_util_default().inspect(json, {
         showHidden: false,
         depth: null,
         colors: true,
@@ -12463,10 +12462,10 @@ const deploySeason = async ({ id, baseUrl, clientId, clientSecret, domain, envir
             },
             json,
         });
-        core_default().info("\nSeason deploy completed\n");
+        core.info("\nSeason deploy completed\n");
     }
     catch (err) {
-        core_default().setFailed(`\nError during season deploy\n ${external_util_default().inspect(err, {
+        core.setFailed(`\nError during season deploy\n ${external_util_default().inspect(err, {
             showHidden: false,
             depth: null,
             colors: true,
@@ -12519,10 +12518,10 @@ else {
         throw new Error("You need to set environment variable for either EPISODES_PROVISIONER_CLIENT_PASSWORD or PW");
     }
 }
-_actions_core__WEBPACK_IMPORTED_MODULE_1___default().info(`Base URL: ${baseUrl}`);
-_actions_core__WEBPACK_IMPORTED_MODULE_1___default().info(`Environment: ${environment}`);
-_actions_core__WEBPACK_IMPORTED_MODULE_1___default().info(`Domain: ${domain}`);
-_actions_core__WEBPACK_IMPORTED_MODULE_1___default().info(`RootPath: ${rootPath}`);
+_actions_core__WEBPACK_IMPORTED_MODULE_1__.info(`Base URL: ${baseUrl}`);
+_actions_core__WEBPACK_IMPORTED_MODULE_1__.info(`Environment: ${environment}`);
+_actions_core__WEBPACK_IMPORTED_MODULE_1__.info(`Domain: ${domain}`);
+_actions_core__WEBPACK_IMPORTED_MODULE_1__.info(`RootPath: ${rootPath}`);
 await (0,_deploy_season__WEBPACK_IMPORTED_MODULE_0__/* .deploySeason */ .t)({
     id,
     baseUrl,
