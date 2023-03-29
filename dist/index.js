@@ -12451,7 +12451,7 @@ const deploySeason = async ({ id, baseUrl, clientId, clientSecret, domain, envir
     }
     const season = (0,yaml_dist/* parse */.Qc)(await (0,promises_namespaceObject.readFile)(path, "utf-8"));
     const json = { id, ...season };
-    core_default().debug(`Object to deploy:\n ${external_util_default().inspect(json, {
+    core_default().info(`Object to deploy:\n ${external_util_default().inspect(json, {
         showHidden: false,
         depth: null,
         colors: true,
@@ -12463,7 +12463,7 @@ const deploySeason = async ({ id, baseUrl, clientId, clientSecret, domain, envir
             },
             json,
         });
-        core_default().debug("\nSeason deploy completed\n");
+        core_default().info("\nSeason deploy completed\n");
     }
     catch (err) {
         core_default().setFailed(`\nError during season deploy\n ${external_util_default().inspect(err, {
@@ -12482,6 +12482,9 @@ const deploySeason = async ({ id, baseUrl, clientId, clientSecret, domain, envir
 
 __nccwpck_require__.a(module, async (__webpack_handle_async_dependencies__) => {
 /* harmony import */ var _deploy_season__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(8627);
+/* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(7954);
+/* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__nccwpck_require__.n(_actions_core__WEBPACK_IMPORTED_MODULE_1__);
+
 
 const { GITHUB_REPOSITORY, GITHUB_WORKSPACE, INPUT_ENVIRONMENT_NAME, INPUT_EPISODES_PROVISIONER_CLIENT_PASSWORD, INPUT_EPISODES_PROVISIONER_CLIENT, INPUT_SEASON_FILE_PATH, INPUT_TARGET_DOMAIN, PW, } = process.env;
 let baseUrl;
@@ -12516,10 +12519,10 @@ else {
         throw new Error("You need to set environment variable for either EPISODES_PROVISIONER_CLIENT_PASSWORD or PW");
     }
 }
-console.log(`Base URL: ${baseUrl}`);
-console.log(`Environment: ${environment}`);
-console.log(`Domain: ${domain}`);
-console.log(`RootPath: ${rootPath}`);
+_actions_core__WEBPACK_IMPORTED_MODULE_1___default().info(`Base URL: ${baseUrl}`);
+_actions_core__WEBPACK_IMPORTED_MODULE_1___default().info(`Environment: ${environment}`);
+_actions_core__WEBPACK_IMPORTED_MODULE_1___default().info(`Domain: ${domain}`);
+_actions_core__WEBPACK_IMPORTED_MODULE_1___default().info(`RootPath: ${rootPath}`);
 await (0,_deploy_season__WEBPACK_IMPORTED_MODULE_0__/* .deploySeason */ .t)({
     id,
     baseUrl,
