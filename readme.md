@@ -39,3 +39,12 @@ jobs:
 - `episodes_provisioner_client`: (Required) ask talentdigital support
 - `target_domain`: (Required) e.g. talent.digital.eu
 - `season_file_path`: (Optional) Custom path for `season.yaml`, default to root directory.
+
+## Development
+
+To run the script locally for windows, run the following command:
+
+`export GITHUB_REPOSITORY=season-name && export GITHUB_WORKSPACE=my-season-path && export PW=XXX && pnpm run deploy`
+
+_Note_
+Replace `GITHUB_REPOSITORY` with the season name, `GITHUB_WORKSPACE` with the path to the season.yaml file & `PW` with the episodes_provisioner_client_password.

@@ -19,7 +19,10 @@ let domain: string;
 if (!GITHUB_REPOSITORY)
   throw "The GITHUB_REPOSITORY environment variable is empty!";
 
-const id = GITHUB_REPOSITORY.replace("/", "-");
+if (!GITHUB_WORKSPACE)
+  throw "The GITHUB_WORKSPACE environment variable is empty!";
+
+const repositoryId = GITHUB_REPOSITORY.replace("/", "-");
 
 if (!!INPUT_ENVIRONMENT_NAME && !!INPUT_TARGET_DOMAIN) {
   baseUrl = `https://${INPUT_ENVIRONMENT_NAME}.${INPUT_TARGET_DOMAIN}`;
@@ -57,7 +60,7 @@ core.info(`Domain: ${domain}`);
 core.info(`RootPath: ${rootPath}`);
 
 await deploySeason({
-  id,
+  repositoryId,
   baseUrl,
   clientId,
   clientSecret,

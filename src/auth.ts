@@ -24,12 +24,14 @@ export const getAuthorizationHeader = async (
 
     return `${token_type} ${access_token}`;
   } catch (err) {
-    core.setFailed(
-      `\nFailed to authorize\n ${util.inspect(err, {
-        showHidden: false,
-        depth: null,
-        colors: true,
-      })}`
-    );
+    const statusMsg = err.response.status
+      ? `, status: ${err.response.status}`
+      : "";
+    const bodyMsg = util.inspect(err.response.body, {
+      showHidden: false,
+      depth: null,
+      colors: true,
+    });
+    core.setFailed(`Failed to authorize ${statusMsg}, ${bodyMsg}`);
   }
 };

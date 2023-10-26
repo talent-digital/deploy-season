@@ -9,7 +9,7 @@ import { SeasonDefinition } from "@talentdigital/season";
 import * as core from "@actions/core";
 
 type DeploySeasonInput = {
-  id: string;
+  repositoryId: string;
   baseUrl: string;
   clientId: string;
   clientSecret: string;
@@ -19,7 +19,7 @@ type DeploySeasonInput = {
 };
 
 export const deploySeason = async ({
-  id,
+  repositoryId,
   baseUrl,
   clientId,
   clientSecret,
@@ -49,7 +49,10 @@ export const deploySeason = async ({
 
   const season: SeasonDefinition = parse(await readFile(path, "utf-8"));
 
-  const json = { id, ...season };
+  const json = {
+    ...season,
+    id: season.id !== undefined ? season.id : repositoryId,
+  };
 
   core.info(
     `Object to deploy:\n ${util.inspect(json, {
@@ -68,12 +71,15 @@ export const deploySeason = async ({
     });
     core.info("\nSeason deploy completed\n");
   } catch (err) {
-    core.setFailed(
-      `\nError during season deploy\n ${util.inspect(err, {
-        showHidden: false,
-        depth: null,
-        colors: true,
-      })}`
-    );
+    const statusMsg = err.response.status
+      ? `, status: ${err.response.status}`
+      : "";
+    const bodyMsg = util.inspect(err.response.body, {
+      showHidden: false,
+      depth: null,
+      colors: true,
+    });
+
+    core.setFailed(`Error during season deploy ${statusMsg}, ${bodyMsg}`);
   }
 };
