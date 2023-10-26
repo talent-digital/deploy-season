@@ -12413,7 +12413,7 @@ const getAuthorizationHeader = async (domain, environment, clientId, clientSecre
         return `${token_type} ${access_token}`;
     }
     catch (err) {
-        core.setFailed(`\nFailed to authorize\n ${external_util_default().inspect(err, {
+        core.setFailed(`\nFailed to authorize\n ${external_util_default().inspect(err.response.body, {
             showHidden: false,
             depth: null,
             colors: true,
@@ -12434,7 +12434,7 @@ var external_fs_ = __nccwpck_require__(7147);
 
 
 
-const deploySeason = async ({ id, baseUrl, clientId, clientSecret, domain, environment, rootPath, }) => {
+const deploySeason = async ({ repositoryId, baseUrl, clientId, clientSecret, domain, environment, rootPath, }) => {
     const authorization = await getAuthorizationHeader(domain, environment, clientId, clientSecret);
     let path = "";
     const path1 = (0,external_path_.join)(rootPath, "season.yml");
@@ -12449,7 +12449,10 @@ const deploySeason = async ({ id, baseUrl, clientId, clientSecret, domain, envir
         throw new Error(`season.yaml or season.yml don't exist at specified path: ${rootPath}`);
     }
     const season = (0,yaml_dist/* parse */.Qc)(await (0,promises_namespaceObject.readFile)(path, "utf-8"));
-    const json = { id, ...season };
+    const json = {
+        ...season,
+        id: season.id !== undefined ? season.id : repositoryId,
+    };
     core.info(`Object to deploy:\n ${external_util_default().inspect(json, {
         showHidden: false,
         depth: null,
@@ -12465,11 +12468,15 @@ const deploySeason = async ({ id, baseUrl, clientId, clientSecret, domain, envir
         core.info("\nSeason deploy completed\n");
     }
     catch (err) {
-        core.setFailed(`\nError during season deploy\n ${external_util_default().inspect(err, {
+        const statusMsg = err.response.status
+            ? `, status: ${err.response.status}`
+            : "";
+        const bodyMsg = external_util_default().inspect(err.response.body, {
             showHidden: false,
             depth: null,
             colors: true,
-        })}`);
+        });
+        core.setFailed(`Error during season deploy ${statusMsg}, ${bodyMsg}`);
     }
 };
 
@@ -12491,7 +12498,9 @@ let environment;
 let domain;
 if (!GITHUB_REPOSITORY)
     throw "The GITHUB_REPOSITORY environment variable is empty!";
-const id = GITHUB_REPOSITORY.replace("/", "-");
+if (!GITHUB_WORKSPACE)
+    throw "The GITHUB_WORKSPACE environment variable is empty!";
+const repositoryId = GITHUB_REPOSITORY.replace("/", "-");
 if (!!INPUT_ENVIRONMENT_NAME && !!INPUT_TARGET_DOMAIN) {
     baseUrl = `https://${INPUT_ENVIRONMENT_NAME}.${INPUT_TARGET_DOMAIN}`;
     environment = INPUT_ENVIRONMENT_NAME;
@@ -12523,7 +12532,7 @@ _actions_core__WEBPACK_IMPORTED_MODULE_1__.info(`Environment: ${environment}`);
 _actions_core__WEBPACK_IMPORTED_MODULE_1__.info(`Domain: ${domain}`);
 _actions_core__WEBPACK_IMPORTED_MODULE_1__.info(`RootPath: ${rootPath}`);
 await (0,_deploy_season__WEBPACK_IMPORTED_MODULE_0__/* .deploySeason */ .t)({
-    id,
+    repositoryId,
     baseUrl,
     clientId,
     clientSecret,
