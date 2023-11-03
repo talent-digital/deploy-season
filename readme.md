@@ -42,9 +42,19 @@ jobs:
 
 ## Development
 
+### Running locally
+
 To run the script locally for windows, run the following command:
 
 `export GITHUB_REPOSITORY=season-name && export GITHUB_WORKSPACE=my-season-path && export PW=XXX && pnpm run deploy`
 
 _Note_
 Replace `GITHUB_REPOSITORY` with the season name, `GITHUB_WORKSPACE` with the path to the season.yaml file & `PW` with the episodes_provisioner_client_password.
+
+### Making changes
+
+After you make changes in the src files, you need to update the `dist/index.js` file. This is the file that is used by the action. To update this file, run `pnpm build`.
+
+### Releasing new version
+
+After merging your changes to the main branch use the github.com release / tag functionality. These tags are available in the workflows of the season repositories.
