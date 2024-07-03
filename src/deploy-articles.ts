@@ -8,6 +8,21 @@ import fetch from "node-fetch";
 
 const { readFile, readdir } = fsPromises;
 
+type ArticleMd = {
+  __content?: string;
+  abstract?: string;
+  author?: string;
+  competences?: number[];
+  created?: string;
+  draft?: boolean;
+  language?: string;
+  slug?: string;
+  tags?: string[];
+  teaser?: string;
+  title?: string;
+  videoFileName?: string;
+};
+
 type DeployArticlesInput = {
   authorization: string;
   baseUrl: string;
@@ -35,7 +50,7 @@ export const deployArticles = async ({
       const content = await readFile(join(path, file), {
         encoding: "utf-8",
       });
-      const article = yamlFront.loadFront(content);
+      const article: ArticleMd = yamlFront.loadFront(content);
 
       if (serverArticles.some((a) => a.title === article.title)) {
         core.info(
@@ -57,12 +72,13 @@ export const deployArticles = async ({
 };
 
 const uploadImage = async (
-  article: any, // TODO
+  article: ArticleMd,
   authorization: string,
   baseUrl: string,
   fileName: string,
   rootPath: string
 ) => {
+  core.info(`Uploading image ${fileName}\n`);
   const blob: Blob = await getBlobFromFilePath(join(rootPath, article.teaser));
 
   const imageFile = new File([blob], fileName, {
@@ -93,18 +109,19 @@ const uploadImage = async (
         `Failed to upload: ${response.status} ${response.statusText} - ${errorBody}`
       );
     }
+    core.info(`Uploaded ${fileName} successfully\n`);
   } catch (error) {
     if (error.response) {
-      console.error("Error response from server:", error.response.body);
+      core.setFailed(`Error response from server: ${error.response.body}`);
     } else {
-      console.error("Request error:", error);
+      core.setFailed(`Request error: ${error}`);
     }
     throw error;
   }
 };
 
 const uploadArticle = async (
-  article: any, // TODO?
+  article: ArticleMd,
   authorization: string,
   baseUrl: string,
   fileName: string
@@ -153,7 +170,7 @@ const getBlobFromFilePath = async (filePath) => {
     const fileBuffer = await readFile(absolutePath);
     return new Blob([fileBuffer]);
   } catch (error) {
-    console.error("Error reading file:", error);
+    core.setFailed(`Error reading file: ${error}`);
     throw error;
   }
 };
