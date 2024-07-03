@@ -1,6 +1,5 @@
 import { readFile } from "fs/promises";
 import { join } from "path";
-import { getAuthorizationHeader } from "./auth";
 import { parse } from "yaml";
 import util from "util";
 import got from "got";
@@ -11,28 +10,16 @@ import * as core from "@actions/core";
 type DeploySeasonInput = {
   repositoryId: string;
   baseUrl: string;
-  clientId: string;
-  clientSecret: string;
-  domain: string;
-  environment: string;
+  authorization: string;
   rootPath: string;
 };
 
 export const deploySeason = async ({
   repositoryId,
   baseUrl,
-  clientId,
-  clientSecret,
-  domain,
-  environment,
+  authorization,
   rootPath,
 }: DeploySeasonInput) => {
-  const authorization = await getAuthorizationHeader(
-    domain,
-    environment,
-    clientId,
-    clientSecret
-  );
   let path = "";
   const path1 = join(rootPath, "season.yml");
   const path2 = join(rootPath, "season.yaml");

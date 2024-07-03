@@ -1,4 +1,6 @@
+import { getAuthorizationHeader } from "./auth";
 import { deploySeason } from "./deploy-season";
+import { deployArticles } from "./deploy-articles";
 import * as core from "@actions/core";
 
 const {
@@ -59,12 +61,22 @@ core.info(`Environment: ${environment}`);
 core.info(`Domain: ${domain}`);
 core.info(`RootPath: ${rootPath}`);
 
+const authorization = await getAuthorizationHeader(
+  domain,
+  environment,
+  clientId,
+  clientSecret
+);
+
 await deploySeason({
   repositoryId,
   baseUrl,
-  clientId,
-  clientSecret,
-  domain,
-  environment,
+  authorization,
   rootPath,
+});
+
+await deployArticles({
+  authorization,
+  baseUrl,
+  rootPath: GITHUB_WORKSPACE,
 });

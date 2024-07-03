@@ -1,6 +1,6 @@
 # Deploy scripts
 
-This action deploys season metadata to your tentant's database. See main readme for information on how to set up a season.yaml file.
+This action deploys season metadata to your tentant's database. See main readme for information on how to set up a season.yaml file. This action looks for a season.yaml file in the root of the repository and for articles folder. Articles are .md files that are used to create articles in the database.
 
 ## Prerequisites
 
