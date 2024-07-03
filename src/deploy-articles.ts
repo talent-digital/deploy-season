@@ -4,7 +4,6 @@ import { join } from "path";
 import * as core from "@actions/core";
 import got from "got";
 import { ArticleWeb } from "@talentdigital/api-client";
-import fetch from "node-fetch";
 
 const { readFile, readdir } = fsPromises;
 
@@ -42,7 +41,7 @@ export const deployArticles = async ({
     const path = join(rootPath, "articles");
     const files = await readdir(path);
     const mdFiles = files.filter((file) => file.endsWith(".md"));
-    core.info(`Found ${mdFiles.length} files`);
+    core.info(`Deploy articles: found ${mdFiles.length} files\n`);
 
     const serverArticles = await getServerArticles(authorization, baseUrl);
 
@@ -78,14 +77,13 @@ const uploadImage = async (
   fileName: string,
   rootPath: string
 ) => {
-  core.info(`Uploading image ${fileName}\n`);
-  const blob: Blob = await getBlobFromFilePath(join(rootPath, article.teaser));
+  core.info(`Uploading image ${fileName}`);
 
+  const formData = new FormData();
+  const blob: Blob = await getBlobFromFilePath(join(rootPath, article.teaser));
   const imageFile = new File([blob], fileName, {
     type: "image",
   });
-
-  const formData = new FormData();
 
   formData.append(
     "files",
@@ -128,11 +126,15 @@ const uploadArticle = async (
 ) => {
   core.info(`Deploying article ${JSON.stringify(article)}\n`);
 
+  const tags = article.tags
+    ? [...article.tags, article.language ?? null].filter(Boolean)
+    : [];
+
   const json: ArticleWeb = {
     author: article.author ?? "",
     title: article.title ?? "",
     created: article.created,
-    tags: article.tags ?? [],
+    tags,
     teaser: fileName ?? "",
     content: article.__content.trim() ?? "",
     draft: article.draft ?? true,

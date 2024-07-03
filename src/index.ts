@@ -78,5 +78,5 @@ await deploySeason({
 await deployArticles({
   authorization,
   baseUrl,
-  rootPath,
+  rootPath: GITHUB_WORKSPACE,
 });
