@@ -10824,6 +10824,9 @@ const { readFile, readdir } = fs__WEBPACK_IMPORTED_MODULE_0__.promises;
 const deployArticles = async ({ authorization, baseUrl, rootPath, }) => {
     try {
         const path = (0,path__WEBPACK_IMPORTED_MODULE_2__.join)(rootPath, "articles");
+        if (!(0,fs__WEBPACK_IMPORTED_MODULE_0__.existsSync)(path)) {
+            return;
+        }
         const files = await readdir(path);
         const mdFiles = files.filter((file) => file.endsWith(".md"));
         _actions_core__WEBPACK_IMPORTED_MODULE_3__.info(`Deploy articles: found ${mdFiles.length} files\n`);
@@ -10995,10 +10998,10 @@ const deploySeason = async ({ repositoryId, baseUrl, authorization, rootPath, })
         core.info("\nSeason deploy completed\n");
     }
     catch (err) {
-        const statusMsg = err.response.status
+        const statusMsg = err.response?.status
             ? `, status: ${err.response.status}`
             : "";
-        const bodyMsg = external_util_default().inspect(err.response.body, {
+        const bodyMsg = external_util_default().inspect(err.response?.body, {
             showHidden: false,
             depth: null,
             colors: true,

@@ -1,4 +1,4 @@
-import { promises as fsPromises } from "fs";
+import { existsSync, promises as fsPromises } from "fs";
 import * as yamlFront from "yaml-front-matter";
 import { join } from "path";
 import * as core from "@actions/core";
@@ -39,6 +39,9 @@ export const deployArticles = async ({
 }: DeployArticlesInput) => {
   try {
     const path = join(rootPath, "articles");
+    if (!existsSync(path)) {
+      return;
+    }
     const files = await readdir(path);
     const mdFiles = files.filter((file) => file.endsWith(".md"));
     core.info(`Deploy articles: found ${mdFiles.length} files\n`);
