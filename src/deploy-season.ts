@@ -58,10 +58,10 @@ export const deploySeason = async ({
     });
     core.info("\nSeason deploy completed\n");
   } catch (err) {
-    const statusMsg = err.response.status
+    const statusMsg = err.response?.status
       ? `, status: ${err.response.status}`
       : "";
-    const bodyMsg = util.inspect(err.response.body, {
+    const bodyMsg = util.inspect(err.response?.body, {
       showHidden: false,
       depth: null,
       colors: true,
